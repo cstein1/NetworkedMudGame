@@ -6,18 +6,18 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
 
   def enterRoom(p: Player): Unit = {
     players ::= p
-    for (p2 <- players) p2.ps.println(p.name + " IS IN THIS ROOM. PANIC. PANIC. PANIC.")
+    for (p2 <- players) p2.ps.println("\n" + p.name + " is in "+name+".\n")
   }
 
   def leaveRoom(p: Player): Unit = {
     players = players.filter(_ != p)
-    for (p2 <- players) p2.ps.println("It is okay. " + p.name + " are gone. You are safe now.")
+    for (p2 <- players) p2.ps.println("\n" + p.name + " has left" + name + ".\n")
   }
 
   def printDescription(ps: PrintStream): Unit = {
     if (name != "Outside") {
-      ps.println("You are in " + name + ".\n" + desc + "\n")
-    } else { ps.println("You are " + name + ".\n" + desc + "\n") }
+      ps.println("\nYou are in " + name + ".\n" + desc + "\n")
+    } else { ps.println("\nYou are " + name + ".\n" + desc + "\n") }
     if (items == Nil) { ps.println("") }
     else {
       ps.println("ITEMS: ")
@@ -26,8 +26,10 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
     ps.println("EXITS: ")
     for ((Some(e), dir) <- exits.zip(ExitNames)) {
 
-      ps.println(Room.mapRooms(e.xitNum).name + " is " + dir)
+      ps.println( Room.mapRooms(e.xitNum).name + " is " + dir )
     }
+    ps.println("PLAYERS: ")
+    for(p<-players.indices) println(players(p).name)
   }
   def tellRoom(s: String): Unit = {
     for (p2 <- players) p2.ps.println(s)

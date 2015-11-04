@@ -35,13 +35,13 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     if (commands.contains(comm)) commands(comm)(args.trim, player)
     else {
       println("<" + comm)
-      ps.println("I'm sorry, Dave, I'm afraid I can't do that")
+      ps.println("\nI'm sorry, Dave, I'm afraid I can't do that\n")
     }
   }
 
-  val help = List("u for MOVE UP", "d for MOVE DOWN", "n for MOVE NORTH", "e for MOVE EAST", "\nw for MOVE WEST", "get [itemname] for TAKE ITEM",
+  val help = List("\nu for MOVE UP", "d for MOVE DOWN", "n for MOVE NORTH", "e for MOVE EAST", "\nw for MOVE WEST", "get [itemname] for TAKE ITEM",
     "look for REPRINT ROOM DESCRIPTION", "\ninv for INSPECT INVENTORY", "drop [itemname] for DROP ITEM", "eat [itemanme] for EAT ITEM",
-    "tip to TIP FEDORA")
+    "tip to TIP FEDORA\n")
 
   def getFromInventory(itemName: String): Option[Item] = {
     inv.find(_.name == itemName) match {
@@ -50,7 +50,7 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
         Some(item)
 
       case None =>
-        ps.println("Not in inventory")
+        ps.println("\nNot in inventory\n")
         None
     }
   }
@@ -60,9 +60,11 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
       case Some(exit) =>
         Room.mapRooms(exit.xitNum).leaveRoom(this)
         loc = Room.mapRooms(exit.xitNum)
+        loc.enterRoom(this)                             ///////
         loc.printDescription(ps)
+        
 
-      case None => ps.println("Not a valid exit")
+      case None => ps.println("\nNot a valid exit\n")
     }
   }
 
@@ -74,7 +76,7 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     if (inv != Nil) {
       ps.println(inv.map(_.name).mkString(", "))
     } else
-      ps.println("Nothing in Inventory")
+      ps.println("\nNothing in Inventory\n")
   }
 
   def printRoom(): Unit = {
@@ -102,17 +104,17 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
       p.room.getItem(args) match {
         case Some(item) =>
           p.addToInventory(item)
-          ps.println("Picked up " + args)
+          ps.println("\nPicked up " + args + "\n")
         case None =>
-          ps.println("Not in room")
+          ps.println("\nNot in room\n")
       }),
     "drop" -> ((args, p) =>
       p.getFromInventory(args) match {
         case Some(item) =>
           p.room.dropItem(item)
-          ps.println("Dropped " + item.name)
+          ps.println("\nDropped " + item.name + "\n")
         case None =>
-          ps.println("Not in inventory")
+          ps.println("\nNot in inventory\n")
       }),
 
     "look" -> ((args, p) => p.printRoom),
@@ -122,11 +124,11 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     "eat" -> ((args, p) =>
       p.getFromInventory(args) match {
         case Some(item) =>
-          ps.println("That was delicious. Yes. Yummy.")
+          ps.println("\nThat was delicious. Yes. Yummy.\n")
         case None =>
-          ps.println("What are you eating? Is it air?...\n\n\nIs it good?")
+          ps.println("\nWhat are you eating? Is it air?...\n\n\nIs it good?\n")
       }),
-    "tip" -> ((args, p) => ps.println("You tip your fedora. So suave.")) //,
+    "tip" -> ((args, p) => ps.println("\nYou tip your fedora. So suave.\n")) //,
     // "say"  -> ((args, p) => Room.mapRooms(loc.getExit()).tellRoom(p.name + " said: " + args))
     )
 }
