@@ -1,0 +1,40 @@
+<rooms>
+<room name = "a Dream"> <!-- Room 0 -->
+	<description>You float midspace, the room shrouded in white. A blurry figure tips its fedora at you.</description>
+
+	<exit>-1,-1,-1,-1,-1,1</exit>
+</room>
+<room name = "Your Mom's Basement"> <!-- Room 1 -->
+	<description>The only thing you can see is illuminated by the light of the computer. The light shines on a Dorito chip.
+Wait... Doritos are triangles... No... It couldn't be...</description>
+	<item name = "Doritos">Cool Ranch Doritos. Is there any other way? Frito-Lays knows how to do it, baby. 
+But wait... That last chip was a triangle... A thought sparked in your mind... You must tell somebody...
+The Illuminati must be at it again.
+	</item>
+	<item name = "Mountain Dew">Light filters through the bubbles. The shadow cast is a beautiful, fluorescent green.</item>
+	<exit>-1,-1,-1,-1,2,-1</exit> <!-- North, not South, not East, not West, not Up, not Down -->
+</room>
+<room name = "Your Mom's Living Room"> <!-- Room 2 -->
+	<description>Your mother sits knitting you a huge sweater. 
+She puts down her knitting and says "What is it sweetie? Do you need more Frito-Lay Brand Doritos(R) Cool Ranch(R) Flavored Tortilla Chips(tm)?"
+You avoid eye contact. You can't trust her. You can't trust anyone. 
+	</description>
+	<item name = "Family Photo">You see a picture of you, your mother, and your little sister. Three people form a triangle...</item>
+	<exit>4,-1,-1,-1,3,1</exit> <!-- Up(2),Down(0),West(3) -->
+</room>
+<room name = "Your Sibling's Room"> <!-- Room 3 -->
+	<description>
+Your sister is on the computer. A triangle rotates on her screen. She doesn't notice you walk in. She is really absorbed in that triangle...
+"Frito-Lay Brand Doritos(R) Cool Ranch(R) Flavored Tortilla Chips(tm)," she chants under her breath.
+	</description>
+	<exit>-1,-1,-1,-1,-1,2</exit>
+</room>
+<room name = "Outside"> <!-- Room 4 -->
+	<description>The sky is bright and hurts to look at. A flaming cancer machine floats high in the sky. You can feel the radiation
+clinging and digging under your skin.
+You don't know how long you'll be able to last out here.
+	</description>
+	<item name = "Flower">So pleasant. Smells good.</item>
+	<exit>4,4,4,2,-1,-1</exit>
+</room>
+</rooms>
