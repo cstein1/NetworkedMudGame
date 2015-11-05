@@ -34,6 +34,16 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
   def tellRoom(s: String): Unit = {
     for (p2 <- players) p2.ps.println(s)
   }
+  
+  def tellPlayer(s: String, p: Player) {
+    var pOfI:Player = p
+    for (i<- players.indices) {
+      if (p == players(i)) {
+        pOfI = players(i) //player of interest
+        pOfI.ps.println(s)
+      }
+    }
+  }
 
   def getExit(dir: Int): Option[Exit] = {
     exits(dir)
