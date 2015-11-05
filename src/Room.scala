@@ -35,12 +35,14 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
     for (p2 <- players) p2.ps.println(s)
   }
   
-  def tellPlayer(s: String, p: Player) {
-    var pOfI:Player = p
+  def tellPlayer(s: String) {
+    var p = s.split(":")(1).split(" ")(0).trim
+    var args = s.split(":")(2).split(" ")(2).trim
+    var pOfI = players(0) 
     for (i<- players.indices) {
-      if (p == players(i)) {
+      if (p == players(i).name) {
         pOfI = players(i) //player of interest
-        pOfI.ps.println(s)
+        pOfI.ps.println(args)
       }
     }
   }
