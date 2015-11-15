@@ -6,7 +6,7 @@ import java.io.PrintStream
 
 object Main {
 
-  // to enter game, open terminal, and say "telent localhost 6464"
+  // to entesr game, open terminal, and say "telent localhost 6464"
 
   private var players: List[Player] = Nil
 
@@ -32,7 +32,7 @@ object Main {
       }
     }
     while (true) {
-      println("LISTENING")
+      //println("LISTENING")
       for (p <- players) {
         Thread.sleep(100)
         p.update

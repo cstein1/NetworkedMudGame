@@ -11,7 +11,7 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
 
   def leaveRoom(p: Player): Unit = {
     players = players.filter(_ != p)
-    for (p2 <- players) p2.ps.println("\n" + p.name + " has left" + name + ".\n")
+    for (p2 <- players) p2.ps.println("\n" + p.name + " has left " + name + ".\n")
   }
 
   def printDescription(ps: PrintStream): Unit = {
@@ -29,7 +29,9 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
       ps.println( Room.mapRooms(e.xitNum).name + " is " + dir )
     }
     ps.println("PLAYERS: ")
-    for(p<-players.indices) println(players(p).name)
+    for(p<-players.indices; d<-players.indices) {
+      if(p!=d) if(players(p).room==players(d).room) ps.println(players(p).name)
+    }
   }
   def tellRoom(s: String): Unit = {
     for (p2 <- players) p2.ps.println(s)

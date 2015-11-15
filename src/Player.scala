@@ -58,9 +58,9 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
   def move(dir: Int): Unit = {
     loc.getExit(dir) match {
       case Some(exit) =>
+        loc.enterRoom(this)
         Room.mapRooms(exit.xitNum).leaveRoom(this)
         loc = Room.mapRooms(exit.xitNum)
-        loc.enterRoom(this)                             ///////
         loc.printDescription(ps)
         
 
@@ -129,7 +129,7 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
           ps.println("\nWhat are you eating? Is it air?...\n\n\nIs it good?\n")
       }),
     "tip" -> ((args, p) => ps.println("\nYou tip your fedora. So suave.\n")),
-    "say"  -> ((args, p) => Room.mapRooms(loc.getExit(loc.roomNum)).tellRoom(p.name + " said: " + args)),
-    "tell" -> ((args, p) => Room.mapRooms(loc.getExit(loc)).tellPlayer(p.name + " says: " + args)
-    )
+    "say"  -> ((args, p) => p.loc.tellRoom(p.name + " said: " + args)),
+    "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " says: " + args)
+    ))
 }
