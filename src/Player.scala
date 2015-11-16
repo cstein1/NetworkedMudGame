@@ -2,23 +2,20 @@ import java.io.PrintStream
 import java.io.InputStream
 
 class Player(val name: String, private var loc: Room, private var inv: List[Item], val ps: PrintStream, private val is: InputStream) {
-  val buf = collection.mutable.Buffer[Byte]()
-  
-  //Room.mapRooms(Room.mapRooms(loc.getExit(loc))).enterRoom(this) // create a player. It enters a room.
+  def room = loc
 
-  // non-blocking readLine
+  val buf = collection.mutable.Buffer[Byte]()
+
   private def readLine: Option[String] = {
     if (is.available > 0) {
       val buf2 = new Array[Byte](is.available)
       is.read(buf2)
       buf ++= buf2
-      if(buf(buf.length-1) == '\n') {
+      if (buf(buf.length - 1) == '\n') {
         val ret = Some(new String(buf.toArray).trim)
         buf.clear()
         ret
-      }
-      
-      else None
+      } else None
     } else None
   }
 
@@ -39,9 +36,9 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     }
   }
 
-  val help = List("\nu for MOVE UP", "d for MOVE DOWN", "n for MOVE NORTH", "e for MOVE EAST", "\nw for MOVE WEST", "get [itemname] for TAKE ITEM",
+  val help = List("\nup for MOVE UP", "down for MOVE DOWN", "north for MOVE NORTH", "east for MOVE EAST", "\nwest for MOVE WEST", "get [itemname] for TAKE ITEM",
     "look for REPRINT ROOM DESCRIPTION", "\ninv for INSPECT INVENTORY", "drop [itemname] for DROP ITEM", "eat [itemanme] for EAT ITEM",
-    "tip to TIP FEDORA\n")
+    "tip to TIP FEDORA\n", "tell [player name] [message]", "say [message]")
 
   def getFromInventory(itemName: String): Option[Item] = {
     inv.find(_.name == itemName) match {
@@ -54,8 +51,7 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
         None
     }
   }
-  def room = loc
-  
+
   def move(dir: Int): Unit = {
     loc.getExit(dir) match {
       case Some(exit) =>
@@ -63,7 +59,6 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
         loc = Room.mapRooms(exit.xitNum)
         loc.printDescription(this.ps)
         loc.enterRoom(this)
-        
 
       case None => ps.println("\nNot a valid exit\n")
     }
@@ -130,7 +125,6 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
           ps.println("\nWhat are you eating? Is it air?...\n\n\nIs it good?\n")
       }),
     "tip" -> ((args, p) => ps.println("\nYou tip your fedora. So suave.\n")),
-    "say"  -> ((args, p) => p.loc.tellRoom(p.name + " said: " + args)),
-    "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " says: " + args)
-    ))
+    "say" -> ((args, p) => p.loc.tellRoom(p.name + " said: " + args)),
+    "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " says: " + args)))
 }

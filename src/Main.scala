@@ -6,7 +6,7 @@ import java.io.PrintStream
 
 object Main {
 
-  // to entesr game, open terminal, and say "telent localhost 6464"
+  // to enter game, open terminal, and say "telent localhost 6464"
 
   private var players: List[Player] = Nil
 
