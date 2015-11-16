@@ -55,13 +55,14 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     }
   }
   def room = loc
+  
   def move(dir: Int): Unit = {
     loc.getExit(dir) match {
       case Some(exit) =>
-        loc.enterRoom(this)
         Room.mapRooms(exit.xitNum).leaveRoom(this)
         loc = Room.mapRooms(exit.xitNum)
-        loc.printDescription(ps)
+        loc.printDescription(this.ps)
+        loc.enterRoom(this)
         
 
       case None => ps.println("\nNot a valid exit\n")
@@ -80,7 +81,7 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
   }
 
   def printRoom(): Unit = {
-    loc.printDescription(ps)
+    loc.printDescription(this.ps)
   }
 
   def printHelp(): Unit = {

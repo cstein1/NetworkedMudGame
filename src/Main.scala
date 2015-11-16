@@ -32,10 +32,9 @@ object Main {
       }
     }
     while (true) {
-      //println("LISTENING")
-      for (p <- players) {
+      for (p <- players.indices) {
         Thread.sleep(100)
-        p.update
+        players(p).update
       }
     }
   }

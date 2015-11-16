@@ -6,12 +6,16 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
 
   def enterRoom(p: Player): Unit = {
     players ::= p
-    for (p2 <- players) p2.ps.println("\n" + p.name + " is in "+name+".\n")
+    for (p2 <- players) {
+      if(p2.room==p.room && p2 != p) p2.ps.println("\n" + p.name + " walked in.\n")
+    }
   }
 
   def leaveRoom(p: Player): Unit = {
+	  for (p2 <- players) {
+     if(p2.room==p.room && p2 != p) p2.ps.println("\n" + p.name + " has left the room.\n")
+    }
     players = players.filter(_ != p)
-    for (p2 <- players) p2.ps.println("\n" + p.name + " has left " + name + ".\n")
   }
 
   def printDescription(ps: PrintStream): Unit = {
@@ -29,19 +33,23 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
       ps.println( Room.mapRooms(e.xitNum).name + " is " + dir )
     }
     ps.println("PLAYERS: ")
-    for(p<-players.indices; d<-players.indices) {
-      if(p!=d) if(players(p).room==players(d).room) ps.println(players(p).name)
+    
+    for(p<-players) {
+      ps.println(p.name)
+      println(p.name)
     }
   }
   def tellRoom(s: String): Unit = {
-    for (p2 <- players) p2.ps.println(s)
+    println("told room " + s)
+    for (p2 <- players.indices) players(p2).ps.println(s)
   }
   
   def tellPlayer(s: String) {
-    var p = s.split(":")(1).split(" ")(0).trim
-    var args = s.split(":")(2).split(" ")(2).trim
+    println("told player " + s)
+    var p = s.split("\\s+")(1)
+    var args = s.split("\\s+").filter { x => x==p || x=="tell" }
     var pOfI = players(0) 
-    for (i<- players.indices) {
+    for (i <- players.indices) {
       if (p == players(i).name) {
         pOfI = players(i) //player of interest
         pOfI.ps.println(args)
