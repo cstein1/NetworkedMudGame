@@ -5,10 +5,10 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
   val ExitNames = List("North", "South", "East", "West", "Up", "Down")
 
   def enterRoom(p: Player): Unit = {
-    players ::= p
     for (p2 <- players) {
       if (p2.room == p.room && p2 != p) p2.ps.println("\n" + p.name + " walked in.\n")
     }
+    players ::= p
   }
 
   def leaveRoom(p: Player): Unit = {
@@ -36,25 +36,22 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
 
     for (p <- players) {
       ps.println(p.name)
-      println(p.name)
     }
   }
   def tellRoom(s: String): Unit = {
-    println("told room " + s)
     for (p2 <- players.indices) players(p2).ps.println(s)
   }
 
   def tellPlayer(s: String) {
-    println("told player " + s)
-    var p = s.split("\\s+")(1).trim
+    var p = s.split(":")(1).split("\\s+")(1).trim
     println(p)
-    var args = s.split("\\s+").filter { x => x != p || x != "tell" }
-    println(args)
+    var args = s.split(": ")(1).split("\\s+").dropWhile { x => x==p }
+    println(args.mkString)
     var pOfI = players(0)
     for (i <- players.indices) {
       if (p == players(i).name) {
         pOfI = players(i) //player of interest
-        pOfI.ps.println(args)
+        pOfI.ps.println(p.mkString(" ") + " says: " + args.mkString(" "))
       }
     }
   }

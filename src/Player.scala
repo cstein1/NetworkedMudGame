@@ -31,7 +31,7 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     }
     if (commands.contains(comm)) commands(comm)(args.trim, player)
     else {
-      println("<" + comm)
+      println("< " + comm)
       ps.println("\nI'm sorry, Dave, I'm afraid I can't do that\n")
     }
   }
@@ -55,7 +55,7 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
   def move(dir: Int): Unit = {
     loc.getExit(dir) match {
       case Some(exit) =>
-        Room.mapRooms(exit.xitNum).leaveRoom(this)
+        loc.leaveRoom(this)
         loc = Room.mapRooms(exit.xitNum)
         loc.printDescription(this.ps)
         loc.enterRoom(this)
@@ -126,5 +126,5 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
       }),
     "tip" -> ((args, p) => ps.println("\nYou tip your fedora. So suave.\n")),
     "say" -> ((args, p) => p.loc.tellRoom(p.name + " said: " + args)),
-    "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " says: " + args)))
+    "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " : " + args)))
 }
