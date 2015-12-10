@@ -4,6 +4,8 @@ import java.io.PrintStream
 class Room(val name: String, desc: String, private var items: List[Item], exits: Array[Option[Exit]], private var players: List[Player]) {
   val ExitNames = List("North", "South", "East", "West", "Up", "Down")
 
+  def exitOut = exits
+  
   def enterRoom(p: Player): Unit = {
     for (p2 <- players) {
       if (p2.room == p.room && p2 != p) p2.ps.println("\n" + p.name + " walked in.\n")
@@ -80,7 +82,7 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
       if(Room.mapRooms(rover) == this) return rover
       else rover += 1
     }
-    0
+    -1
   }
 }
 

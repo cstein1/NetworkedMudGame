@@ -82,18 +82,22 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
   def printHelp(): Unit = {
     ps.println(help.mkString(", "))
   }
-
-  def findRoom(toGo:String, seen:List[String]):Unit = {
-    if(loc.name==toGo) ps.println(seen.mkString("->"))
+ 
+  
+  def findRoom(cur: Room, dest: Room, bread: List[Room]): List[Room] = {
+    if (cur == dest) cur :: bread
     else {
-      def nextRoom(dir:Int):Room = loc.getExit(dir) match {
-        case Some(exit) => Room.mapRooms(exit.xitNum)
-        case None => 
-          ps.println("\nYou're already there!\n")
-          loc
+      val paths = for (Some(e) <- cur.exitOut; if !bread.contains(Room.mapRooms(e.xitNum))) yield {
+        findRoom(Room.mapRooms(e.xitNum),dest,cur::bread)
       }
-      val breadCrumb = seen ++ List[String](toGo)
-      findRoom(nextRoom(loc.thisRoomNum).name, breadCrumb)
+      val outPaths = paths.sortBy { x => x.length }
+      outPaths(0)
+    }
+  }
+  def findRoomInterp(cur:Room,inp:String):Unit = {
+    for(i<- Room.mapRooms){
+      if(inp==i.name) ps.println(findRoom(cur,i,List[Room]()))
+      else ps.println("\n\nnPlease check that you spelled the room name correctly!\n")
     }
   }
 
@@ -141,5 +145,5 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     "tip" -> ((args, p) => ps.println("\nYou tip your fedora. So suave.\n")),
     "say" -> ((args, p) => p.loc.tellRoom(p.name + " said: " + args)),
     "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " : " + args)),
-    "find" -> ((args,p) => p.findRoom(args, List[String]())))
+    "find" -> ((args, p) => p.findRoomInterp(p.loc,args)))
 }
