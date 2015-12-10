@@ -1,5 +1,5 @@
 <rooms>
-<room name = "a Dream"> <!-- Room 0 -->
+<room name = "A Dream"> <!-- Room 0 -->
 	<description>You float midspace, the room shrouded in white. A blurry figure tips its fedora at you.</description>
 
 	<exit>-1,-1,-1,-1,-1,1</exit>
