@@ -83,6 +83,20 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     ps.println(help.mkString(", "))
   }
 
+  def findRoom(toGo:String, seen:List[String]):Unit = {
+    if(loc.name==toGo) ps.println(seen.mkString("->"))
+    else {
+      def nextRoom(dir:Int):Room = loc.getExit(dir) match {
+        case Some(exit) => Room.mapRooms(exit.xitNum)
+        case None => 
+          ps.println("\nYou're already there!\n")
+          loc
+      }
+      val breadCrumb = seen ++ List[String](toGo)
+      findRoom(nextRoom(loc.thisRoomNum).name, breadCrumb)
+    }
+  }
+
   val commands = Map[String, (String, Player) => Unit](
     "north" -> ((args, p) => p.move(0)),
     "n" -> ((args, p) => p.move(0)),
@@ -126,5 +140,6 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
       }),
     "tip" -> ((args, p) => ps.println("\nYou tip your fedora. So suave.\n")),
     "say" -> ((args, p) => p.loc.tellRoom(p.name + " said: " + args)),
-    "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " : " + args)))
+    "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " : " + args)),
+    "find" -> ((args,p) => p.findRoom(args, List[String]())))
 }

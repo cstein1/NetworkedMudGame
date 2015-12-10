@@ -73,11 +73,21 @@ class Room(val name: String, desc: String, private var items: List[Item], exits:
   def dropItem(item: Item): Unit = {
     items ::= item
   }
+  
+  def thisRoomNum:Int = {
+    var rover = 0
+    while (true) {
+      if(Room.mapRooms(rover) == this) return rover
+      else rover += 1
+    }
+    0
+  }
 }
 
 object Room {
   val mapRooms = readMap
 
+  
   def readMap: Array[Room] = {
     val xml = XML.loadFile("map.xml")
     (xml \ "room").map(n => Room(n)).toArray
