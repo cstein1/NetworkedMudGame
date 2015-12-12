@@ -145,5 +145,5 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     "tip" -> ((args, p) => ps.println("\nYou tip your fedora. So suave.\n")),
     "say" -> ((args, p) => p.loc.tellRoom(p.name + " said: " + args)),
     "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " : " + args)),
-    "find" -> ((args, p) => p.findRoomInterp(p.loc,args)))
+    "shortPath" -> ((args, p) => p.findRoomInterp(p.loc,args)))
 }
