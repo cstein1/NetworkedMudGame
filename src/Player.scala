@@ -82,22 +82,28 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
   def printHelp(): Unit = {
     ps.println(help.mkString(", "))
   }
- 
-  
+
   def findRoom(cur: Room, dest: Room, bread: List[Room]): List[Room] = {
     if (cur == dest) cur :: bread
     else {
       val paths = for (Some(e) <- cur.exitOut; if !bread.contains(Room.mapRooms(e.xitNum))) yield {
-        findRoom(Room.mapRooms(e.xitNum),dest,cur::bread)
+        findRoom(Room.mapRooms(e.xitNum), dest, cur :: bread)
       }
-      val outPaths = paths.sortBy { x => x.length }
-      outPaths(0)
+      val outPaths = paths.filter(_.nonEmpty).sortBy(_.length)
+      println(outPaths.mkString("->"))
+      if(!outPaths.isEmpty) outPaths(0)
+      else Nil
     }
   }
-  def findRoomInterp(cur:Room,inp:String):Unit = {
-    for(i<- Room.mapRooms){
-      if(inp==i.name) ps.println(findRoom(cur,i,List[Room]()))
-      else ps.println("\n\nnPlease check that you spelled the room name correctly!\n")
+  def findRoomInterp(cur: Room, inp: String): Unit = {
+    val roomNames = Room.mapRooms
+    roomNames.foreach(_.name)
+    for (i <- Room.mapRooms) {
+      if (!roomNames.contains(i)) ps.println("\nMake sure you spelled that correctly\n")
+      else if(inp == i.name) {
+        val room = findRoom(cur, i, List[Room]()).map(_.name).reverse
+        ps.println(room.mkString("->"))
+      }
     }
   }
 
