@@ -38,7 +38,7 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
 
   val help = List("\nup for MOVE UP", "down for MOVE DOWN", "north for MOVE NORTH", "east for MOVE EAST", "\nwest for MOVE WEST", "get [itemname] for TAKE ITEM",
     "look for REPRINT ROOM DESCRIPTION", "\ninv for INSPECT INVENTORY", "drop [itemname] for DROP ITEM", "eat [itemanme] for EAT ITEM",
-    "tip to TIP FEDORA\n", "tell [player name] [message]", "say [message]")
+    "tip to TIP FEDORA\n", "tell [player name] [message]", "say [message]", "shortPath [RoomName] for DIRECTIONS TO ROOM")
 
   def getFromInventory(itemName: String): Option[Item] = {
     inv.find(_.name == itemName) match {
@@ -106,8 +106,9 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
       }
     }
   }
-
-  val commands = Map[String, (String, Player) => Unit](
+  
+  
+  val commands = TreeMap[String, (String, Player) => Unit](
     "north" -> ((args, p) => p.move(0)),
     "n" -> ((args, p) => p.move(0)),
     "south" -> ((args, p) => p.move(1)),
@@ -151,5 +152,5 @@ class Player(val name: String, private var loc: Room, private var inv: List[Item
     "tip" -> ((args, p) => ps.println("\nYou tip your fedora. So suave.\n")),
     "say" -> ((args, p) => p.loc.tellRoom(p.name + " said: " + args)),
     "tell" -> ((args, p) => p.loc.tellPlayer(p.name + " : " + args)),
-    "shortPath" -> ((args, p) => p.findRoomInterp(p.loc,args)))
+    "shortPath" -> ((args, p) => p.findRoomInterp(p.loc,args)))((s1,s2)=> s1.compareTo(s2))
 }
